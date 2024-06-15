@@ -1,60 +1,23 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext } from 'react';
+
+import { useTheme } from '@/hooks/useTheme';
+
+type ThemeContextType = ReturnType<typeof useTheme>;
 
 type ThemeProviderProps = {
-    children: React.ReactNode
-    defaultTheme?: string
-    storageKey?: string
-}
+  children: React.ReactNode;
+};
 
-export type ThemeProviderState = {
-    theme: string
-    setTheme: (theme: string) => void
-}
+export const ThemeContext = createContext<ThemeContextType>(
+  {} as ThemeContextType
+);
 
-const initialState = {
-    theme: "system",
-    setTheme: () => null,
-}
+export default function ThemeProvider({ children }: ThemeProviderProps) {
+  const { systemTheme, setTheme } = useTheme();
 
-export const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
-
-export function ThemeProvider({
-    children,
-    defaultTheme = "system",
-    storageKey = "shadcn-ui-theme",
-    ...props
-}: ThemeProviderProps) {
-    const [theme, setTheme] = useState(
-        () => localStorage.getItem(storageKey) ?? defaultTheme
-    )
-
-    useEffect(() => {
-        const root = window.document.documentElement
-
-        root.classList.remove("light", "dark")
-
-        if (theme === "system") {
-            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-                .matches
-                ? "dark"
-                : "light"
-
-            root.classList.add(systemTheme)
-            return
-        }
-
-        root.classList.add(theme)
-    }, [theme])
-
-    return (
-        <ThemeProviderContext.Provider {...props} value={{
-            theme,
-            setTheme: (theme: string) => {
-                localStorage.setItem(storageKey, theme)
-                setTheme(theme)
-            },
-        }}>
-            {children}
-        </ThemeProviderContext.Provider>
-    )
+  return (
+    <ThemeContext.Provider value={{ systemTheme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 }
