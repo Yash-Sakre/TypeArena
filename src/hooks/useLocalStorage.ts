@@ -1,4 +1,4 @@
-import { Theme } from '@/types/index';
+import { Theme } from '../types/index';
 
 export const useLocalStorage = () => {
   const setLocalStorageValue = (key: string, value: number | Theme) => {

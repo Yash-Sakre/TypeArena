@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-import { generateWord } from '@/utils';
+import { generateWord } from '../utils';
 
 export const useWord = (numberOfWords: number) => {
   const [word, setWord] = useState<string>(

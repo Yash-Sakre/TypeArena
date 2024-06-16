@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import { useCursorPosition } from './useCursorPosition';
-import { isAllowedCode } from '@/utils';
+import { isAllowedCode } from '../utils';
 
 type TypingState = 'idle' | 'start' | 'typing';
 

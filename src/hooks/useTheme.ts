@@ -3,8 +3,8 @@ import { useState, useCallback, useContext } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
 import { ThemeContext } from '../contexts/ThemeContext';
-import { theme } from '@/utils';
-import type { Theme } from '@/types';
+import { theme } from '../utils';
+import type { Theme } from '../types';
 
 export const useTheme = () => {
   const { getLocalStorageValue, setLocalStorageValue } = useLocalStorage();

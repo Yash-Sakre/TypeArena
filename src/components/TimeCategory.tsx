@@ -5,7 +5,7 @@ import { BiTimer } from "react-icons/bi";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { Theme } from "../types";
 import Countdown from "./Countdown";
-import { useSystem } from "@/hooks/useSystem";
+import { useSystem } from "../hooks/useSystem";
 
 type TimeCategoryProps = {
   time: number;
