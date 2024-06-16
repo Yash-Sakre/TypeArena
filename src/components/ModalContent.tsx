@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import { useClipboard } from '../hooks/useClipboard';
-import { useScreenShot } from '../hooks/useScreenShot';
 import { useThemeContext } from '../hooks/useTheme';
 
 import { IoCopy } from 'react-icons/io5';
@@ -31,7 +30,6 @@ const ModalContent = ({ totalTime, history, results }: ModalContentProps) => {
   const [imageCopied, setImageCopied] = useState(false);
 
   const { copyTextToClipboard } = useClipboard();
-  const { ref, image, getImage } = useScreenShot();
   const { systemTheme } = useThemeContext();
 
   return (
@@ -42,13 +40,12 @@ const ModalContent = ({ totalTime, history, results }: ModalContentProps) => {
       }}
     >
       <div
-        ref={ref}
         className='flex-[3] px-5 py-7'
         style={{
           backgroundColor: systemTheme.background.primary,
         }}
       >
-        <div className=' grid grid-flow-col grid-rows-6 justify-center gap-4 sm:grid-rows-4 sm:justify-normal lg:grid-rows-2 lg:justify-normal lg:gap-10 '>
+        <div className='grid justify-center grid-flow-col grid-rows-6 gap-4  sm:grid-rows-4 sm:justify-normal lg:grid-rows-2 lg:justify-normal lg:gap-10'>
           <ResultCard
             title='wpm/cpm'
             tooltipId='wpm'
@@ -113,7 +110,7 @@ const ModalContent = ({ totalTime, history, results }: ModalContentProps) => {
             }}
             theme={systemTheme}
           >
-            <IoCopy className='cursor-pointer text-xl' />
+            <IoCopy className='text-xl cursor-pointer' />
           </StyledCopyButton>
           <div
             className='rounded-md'
@@ -141,49 +138,6 @@ const ModalContent = ({ totalTime, history, results }: ModalContentProps) => {
               />
             );
           })}
-        </div>
-      </div>
-
-      <div className='flex flex-[1] flex-col px-5'>
-        <div
-          className='group mt-auto flex cursor-pointer items-center gap-2 '
-          onClick={async () => {
-            try {
-              getImage();
-              const res = await fetch(image);
-              const data = await res.blob();
-              await navigator.clipboard.write([
-                new ClipboardItem({ [data.type]: data }),
-              ]);
-
-              setImageCopied(true);
-              setTimeout(() => {
-                setImageCopied(false);
-              }, 2000);
-            } catch (error) {
-              console.log(error);
-            }
-          }}
-        >
-          <FaCameraRetro className=' text-xl' />
-          <span className='text-lg hover:underline'>
-            Screenshot your results and share to your friends🔥
-          </span>
-          <div
-            className='rounded-md'
-            style={{
-              backgroundColor: systemTheme.background.secondary,
-            }}
-          >
-            {imageCopied === true ? (
-              <span
-                className='p-5 text-center'
-                style={{ color: systemTheme.text.secondary }}
-              >
-                Image copied to clipboard 😊
-              </span>
-            ) : null}
-          </div>
         </div>
       </div>
     </div>
