@@ -20,15 +20,15 @@ const Countdown = ({ countdown, reset }: CountdownProps) => {
   const { systemTheme } = useThemeContext();
 
   return (
-    <div className='flex justify-end'>
+    <div className='flex '>
       <div
-        className=' rounded-lg p-3'
+        className='p-3 rounded-lg '
         style={{
           backgroundColor: systemTheme.background.secondary,
         }}
       >
         <span
-          className='text-right font-mono text-lg lg:text-xl'
+          className='font-mono text-lg text-right lg:text-xl'
           style={{
             color: systemTheme.text.secondary,
           }}

@@ -9,34 +9,22 @@ const ThemeDropdown = () => {
 
   return (
     <>
-      <div className='flex rounded-md font-mono'>
+      <div className='flex font-mono rounded-md'>
         <div className='relative' ref={dropdownRef}>
           <button
             type='button'
             className={`inline-flex h-full items-center justify-center rounded-md border-0 px-2 outline-0`}
             style={{
+              color:systemTheme.text.secondary,
               backgroundColor: systemTheme.background.secondary,
               border: `1px solid ${systemTheme.text.secondary}`,
             }}
             onClick={() => toggleDropdown()}
           >
-            <div className='flex items-center gap-2'>
-              <div
-                style={{ backgroundColor: systemTheme.background.primary }}
-                className={`aspect-square w-3 rounded-full`}
-              ></div>
-              <div
-                style={{ backgroundColor: systemTheme.text.primary }}
-                className={`aspect-square w-3 rounded-full`}
-              ></div>
-              <div
-                style={{ backgroundColor: systemTheme.text.secondary }}
-                className={`aspect-square w-3 rounded-full`}
-              ></div>
-            </div>
+            {systemTheme.name}
             <svg
               xmlns='http://www.w3.org/2000/svg'
-              className='ml-3 h-4 w-4'
+              className='w-4 h-4 ml-3'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -51,7 +39,7 @@ const ThemeDropdown = () => {
           </button>
 
           <div
-            className='absolute right-0 z-10 mt-1 w-56 origin-top-right rounded-md shadow-lg'
+            className='absolute right-0 z-10 w-56 mt-1 origin-top-right rounded-md shadow-lg'
             style={{
               backgroundColor: systemTheme.background.secondary,
               border: `1px solid ${systemTheme.text.secondary}`,
@@ -65,7 +53,7 @@ const ThemeDropdown = () => {
               {Object.keys(theme).map((key) => (
                 <li
                   key={key}
-                  className='flex cursor-pointer items-center justify-between p-3 text-sm'
+                  className='flex items-center justify-between p-3 text-sm cursor-pointer'
                   onClick={() => {
                     setTheme(theme[key as keyof typeof theme]);
                   }}

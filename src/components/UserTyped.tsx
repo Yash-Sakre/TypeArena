@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
-import styled from 'styled-components';
+import { useMemo } from "react";
+import styled from "styled-components";
 
-import { useThemeContext } from '../hooks/useTheme';
-import Character from './Character';
+import { useThemeContext } from "../hooks/useTheme";
+import Character from "./Character";
 
 type UserTypedProps = {
   charTyped: string;
@@ -20,14 +20,14 @@ const StyledDiv = styled.div`
 
 const UserTyped = ({ check, charTyped, word }: UserTypedProps) => {
   const characters = useMemo(() => {
-    return charTyped.split('');
+    return charTyped.split("");
   }, [charTyped]);
 
   const { systemTheme } = useThemeContext();
 
   return (
     <StyledDiv
-      className='md:character absolute left-0 top-0 z-10 break-all font-mono text-xl lg:text-2xl'
+      className="absolute top-0 left-0 z-10 font-mono text-xl md:character lg:text-3xl"
       theme={systemTheme}
     >
       {characters.map((_, index) => {

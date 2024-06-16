@@ -1,10 +1,14 @@
-import styled from 'styled-components';
-import { BsGithub, BsTelegram, BsWhatsapp, BsCodeSlash } from 'react-icons/bs';
+import styled from "styled-components";
+import { BsGithub, BsTwitterX, BsLinkedin } from "react-icons/bs";
 
-import { useThemeContext } from '../hooks/useTheme';
-
-import Tooltip from './Tooltip';
-import Social from './Social';
+import { useThemeContext } from "../hooks/useTheme";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
+import { Link } from "react-router-dom";
 
 const StyledLink = styled.a`
   &:hover {
@@ -15,54 +19,45 @@ const StyledLink = styled.a`
 const Footer = () => {
   const { systemTheme } = useThemeContext();
   return (
-    <footer className='mb-3 mt-auto'>
-      <div className=' flex items-center justify-between '>
-        <div className='flex items-center justify-center '>
-          <Tooltip tooltipId='Github'>
-            <Social
-              url='http://github.com/Estifanos12'
-              tooltipContent='Github'
-              tooltipId='Github'
-            >
-              <BsGithub className='text-2xl' />
-            </Social>
-          </Tooltip>
-          <Tooltip tooltipId='whatsapp'>
-            <Social
-              url='https://wa.link/e3397e'
-              tooltipContent='WhatsApp'
-              tooltipId='whatsapp'
-            >
-              <BsWhatsapp className='text-2xl' />
-            </Social>
-          </Tooltip>
-
-          <Tooltip tooltipId='telegram'>
-            <Social
-              url='http://t.me/estif1727'
-              tooltipContent='Telegram'
-              tooltipId='telegram'
-            >
-              <BsTelegram className='text-2xl ' />
-            </Social>
-          </Tooltip>
+    <footer className="mt-auto mb-3">
+      <div className="flex flex-col items-center justify-center w-full ">
+        <div className="flex items-center justify-center gap-4 ">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <a
+                  href="https://github.com/Yash-Sakre"
+                  className="cursor-pointer"
+                >
+                  <BsGithub size={30} />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent className="">Github</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <a href="https://x.com/YashSakre4" className="cursor-pointer">
+                  <BsTwitterX size={30} />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent>Telegram</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <a
+                  href="https://www.linkedin.com/in/yash-sakre/"
+                  className="cursor-pointer"
+                >
+                  <BsLinkedin size={30} />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent className="">Linkedin</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
-
-        <div className='flex items-center gap-2'>
-          <BsCodeSlash className='text-xl font-bold' />
-          <Tooltip tooltipId='source-code'>
-            <StyledLink
-              theme={systemTheme}
-              href='http://github.com/Estifanos12/OpenType'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='font-mono text-xl hover:underline'
-              data-tooltip-content='Give me a star 😊'
-              data-tooltip-id='source-code'
-            >
-              Source Code ⭐
-            </StyledLink>
-          </Tooltip>
+        <div className="flex items-center gap-2 mt-2">
+          Made by{" "}
+          <span style={{ color: systemTheme.text.secondary }}>Yash Sakre</span>
         </div>
       </div>
     </footer>
