@@ -104,13 +104,14 @@ function App() {
                 focused={wordContainerFocused}
                 typedLength={charTyped.length}
                 setFocused={setWordContainerFocused}
+                restart = {restartTest}
               >
                 <WordContainer word={word} />
                 <UserTyped word={word} check={checkCharacter} charTyped={charTyped} />
               </WordWrapper>
               </div>
 
-              <Restart restart={restartTest} />
+             
             </CardContent>
           </Card>
 

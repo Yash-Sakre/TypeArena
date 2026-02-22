@@ -1,10 +1,12 @@
 import { MdCenterFocusStrong } from 'react-icons/md';
+import Restart from './Restart';
 
 type WordWrapperProps = {
   children: React.ReactNode;
   focused: boolean;
   typedLength: number;
   setFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  restart: () => void;
 };
 
 const WordWrapper = ({
@@ -12,6 +14,7 @@ const WordWrapper = ({
   focused,
   typedLength,
   setFocused,
+  restart
 }: WordWrapperProps) => {
   return (
     <section className='space-y-2'>
@@ -25,11 +28,10 @@ const WordWrapper = ({
       </div>
 
       <div
-        className={`relative rounded-3xl border border-border/70 bg-card/60 px-5 py-8 transition-all duration-300 sm:px-8 md:py-10 ${
-          focused
-            ? 'shadow-[0_0_0_1px_hsl(var(--primary)/0.6),0_18px_60px_-20px_hsl(var(--primary)/0.45)]'
-            : 'cursor-pointer opacity-90'
-        }`}
+        className={`relative rounded-3xl border border-border/70 bg-card/60 px-5 py-8 transition-all duration-300 sm:px-8 md:py-10 ${focused
+          ? 'shadow-[0_0_0_1px_hsl(var(--primary)/0.6),0_18px_60px_-20px_hsl(var(--primary)/0.45)]'
+          : 'cursor-pointer opacity-90'
+          }`}
         tabIndex={0}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
@@ -48,13 +50,16 @@ const WordWrapper = ({
         </div>
       </div>
 
-      <div className='flex flex-wrap gap-2 text-xs text-muted-foreground'>
-        <span className='rounded-full border border-border/70 bg-background/80 px-2.5 py-1'>
-          Esc restarts run
-        </span>
-        <span className='rounded-full border border-border/70 bg-background/80 px-2.5 py-1'>
-          Backspace edits current word
-        </span>
+      <div className='flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground'>
+        <div className='flex items-center gap-2 '>
+          <span className='rounded-full border border-border/70 bg-background/80 px-2.5 py-1'>
+            Esc restarts run
+          </span>
+          <span className='rounded-full border border-border/70 bg-background/80 px-2.5 py-1'>
+            Backspace edits current word
+          </span>
+        </div>
+        <Restart restart={restart} />
       </div>
     </section>
   );
