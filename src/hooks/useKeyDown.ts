@@ -14,17 +14,22 @@ export const useKeyDown = (active: boolean) => {
     useCursorPosition();
 
   const handleKeyDown = useCallback(
-    ({ key, code }: KeyboardEvent) => {
+    (event: KeyboardEvent) => {
+      const { key, code } = event;
+
       if (!active || !isAllowedCode(code)) return;
 
+      if (code === 'Space') {
+        // Prevent page scroll while typing spaces.
+        event.preventDefault();
+      }
+
       if (key === 'Backspace') {
-        if (charTyped.length > 0 && cursorPosition > 0) {
-          setCharTyped((prev) => prev.slice(0, charTyped.length - 1));
-          setTotalCharacterTyped((prev) =>
-            prev.slice(0, totalCharacterTyped.length - 1)
-          );
-          updateCursorPosition('decrease');
-        }
+        if (cursorPosition <= 0) return;
+
+        setCharTyped((prev) => prev.slice(0, -1));
+        setTotalCharacterTyped((prev) => prev.slice(0, -1));
+        updateCursorPosition('decrease');
         return;
       }
 
@@ -36,24 +41,17 @@ export const useKeyDown = (active: boolean) => {
       setTotalCharacterTyped((prev) => prev + key);
       updateCursorPosition('increase');
     },
-    [
-      active,
-      charTyped.length,
-      cursorPosition,
-      updateCursorPosition,
-      typingState,
-      totalCharacterTyped,
-    ]
+    [active, cursorPosition, typingState, updateCursorPosition]
   );
 
   const resetCharTyped = useCallback(() => {
     setCharTyped('');
-  }, [setCharTyped]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  });
+  }, [handleKeyDown]);
 
   return {
     charTyped,

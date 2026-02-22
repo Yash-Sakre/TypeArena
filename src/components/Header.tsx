@@ -1,79 +1,41 @@
-import styled from "styled-components";
+import { BsQuestionCircle } from 'react-icons/bs';
+import { IoRefreshOutline } from 'react-icons/io5';
 
-import { useThemeContext } from "../hooks/useTheme";
+import ThemeDropdown from './ThemeDropdown';
 
-import { BsQuestionCircle } from "react-icons/bs";
-import { BsKeyboardFill } from "react-icons/bs";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ThemeDropdown from "./ThemeDropdown";
+import { Button } from '@/components/ui/button';
 
 type HeaderProps = {
-  restart: () => void;
-  openAboutModal: (str: string) => void;
-  closeAboutModal: (str: string) => void;
+  onRestart: () => void;
+  onOpenAbout: () => void;
+  bestWpm: number;
+  currentTime: number;
 };
 
-const StyledSvg = styled.svg`
-  width: 50px;
-  height: 50px;
-  color: ${({ theme }) => theme.text.title};
-`;
-
-const Header = ({ restart, openAboutModal }: HeaderProps) => {
-  const { systemTheme } = useThemeContext();
-
+const Header = ({ onRestart, onOpenAbout, bestWpm, currentTime }: HeaderProps) => {
   return (
-    <header className="flex items-center justify-between py-8">
-      <div
-        className="flex items-center gap-3 cursor-pointer"
-        style={{
-          color: systemTheme.text.title,
-        }}
-      >
-        <h1
-          className={`font-mono text-2xl font-bold hover:underline lg:text-3xl`}
-        >
-          TypeArena.
-        </h1>
-        {/* <Tooltip tooltipId='keyboard'>
-          <div
-            className='ml-4'
-            onClick={() => {
-              restart();
-            }}
-            data-tooltip-id='keyboard'
-            data-tooltip-content='Restart'
-          >
-            <BsKeyboardFill className='text-2xl lg:text-3xl ' />
+    <header className='relative overflow-hidden rounded-3xl border border-border/60 bg-card/70 px-5 py-4 backdrop-blur sm:px-7'>
+      <div className='absolute right-0 top-0 h-24 w-24 rounded-full bg-primary/10 blur-3xl' />
+      <div className='relative flex flex-wrap items-center justify-between gap-4'>
+        <div>
+          <p className='font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground'>
+            Type training space
+          </p>
+          <h1 className='font-serif text-3xl text-foreground sm:text-4xl'>Typr</h1>
+        </div>
+
+        <div className='flex items-center gap-2'>
+          <div className='hidden rounded-full border border-border/70 bg-background/70 px-3 py-2 font-mono text-xs text-muted-foreground sm:block'>
+            PB {currentTime / 1000}s: <span className='text-foreground'>{bestWpm} wpm</span>
           </div>
-        </Tooltip> */}
-      </div>
-      <div className="flex gap-4">
-        <ThemeDropdown />
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              {" "}
-              <div
-                data-tooltip-id="about"
-                data-tooltip-content="About"
-                className="cursor-pointer"
-                onClick={() => openAboutModal("about")}
-              >
-                <BsQuestionCircle className="text-3xl" />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              About
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+          <ThemeDropdown />
+          <Button variant='outline' size='icon' onClick={onRestart} aria-label='Restart test'>
+            <IoRefreshOutline className='text-lg' />
+          </Button>
+          <Button variant='outline' size='icon' onClick={onOpenAbout} aria-label='Open about'>
+            <BsQuestionCircle className='text-lg' />
+          </Button>
+        </div>
       </div>
     </header>
   );

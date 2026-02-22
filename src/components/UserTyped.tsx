@@ -1,7 +1,4 @@
 import { useMemo } from "react";
-import styled from "styled-components";
-
-import { useThemeContext } from "../hooks/useTheme";
 import Character from "./Character";
 
 type UserTypedProps = {
@@ -10,32 +7,23 @@ type UserTypedProps = {
   word: string;
 };
 
-const StyledDiv = styled.div`
-  &:last-child {
-    &::after {
-      background-color: ${({ theme }) => theme.text.secondary};
-    }
-  }
-`;
+const MAX_LENGTH = 200;
 
 const UserTyped = ({ check, charTyped, word }: UserTypedProps) => {
   const characters = useMemo(() => {
-    return charTyped.split("");
+    return charTyped.slice(0, MAX_LENGTH).split("");
   }, [charTyped]);
 
-  const { systemTheme } = useThemeContext();
-
   return (
-    <StyledDiv
-      className="absolute top-0 left-0 z-10 font-mono text-xl md:character lg:text-3xl"
-      theme={systemTheme}
-    >
-      {characters.map((_, index) => {
-        return (
-          <Character character={word.charAt(index)} state={check(index)} />
-        );
-      })}
-    </StyledDiv>
+    <div className="typing-caret pointer-events-none absolute left-0 top-0 z-10 m-0 w-full whitespace-pre-wrap break-words font-mono text-2xl leading-relaxed tracking-wide md:text-3xl lg:text-4xl">
+      {characters.map((_, index) => (
+        <Character
+          key={`${word.charAt(index)}-${index}`}
+          character={word.charAt(index)}
+          state={check(index)}
+        />
+      ))}
+    </div>
   );
 };
 

@@ -1,55 +1,60 @@
-import { BiLogoTelegram } from 'react-icons/bi';
-import { BsGithub } from 'react-icons/bs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const AboutPage = () => {
   return (
-    <div className='m-auto flex h-[90%] w-[90%] flex-col gap-7 py-10 font-mono text-lg'>
-      <div className='flex flex-col gap-3'>
-        <h1 className='text-3xl font-bold'>About TypeArena</h1>
-        <p className=''>
-          TypeArena is an innovative platform designed to enhance your typing skills. Built with
-          React and TailwindCSS, this app draws inspiration from{' '}
-          <a
-            href='http://www.monkeytype.com'
-            target='_blank'
-            className='font-bold hover:underline'
-          >
-            MonkeyType
-          </a>
-          . Our goal is to provide a seamless and engaging experience for users looking to test
-          and improve their typing speed and accuracy through a sleek, minimalistic interface.
-        </p>
-      </div>
-      <div className='flex flex-col gap-3 mb-5'>
-        <h2 className='text-2xl font-bold'>Features</h2>
-        <ul className='space-y-2 list-none list-inside'>
-          <li>
-            <strong className='italic'>Typing Challenges</strong>: Engage in various typing
-            challenges that help measure and improve your typing speed and accuracy. The challenges
-            include diverse sentences and paragraphs, with results displayed in words per minute
-            (WPM).
-          </li>
-          <li>
-            <strong className='italic'>Customizable Durations</strong>: Choose from different
-            typing test durations such as 15 seconds, 30 seconds, or 60 seconds to suit your
-            practice needs.
-          </li>
-          <li>
-            <strong className='italic'>Performance Metrics</strong>: Track detailed statistics
-            including WPM/CPM, accuracy percentage, error rate, and total characters typed to
-            monitor your progress.
-          </li>
-          <li>
-            <strong className='italic'>Typing History</strong>: Review your past typing sessions
-            and analyze your performance trends over time.
-          </li>
-          <li>
-            <strong className='italic'>Adaptive Design</strong>: Enjoy a responsive interface that
-            adapts to different screen sizes, ensuring a consistent experience across various
-            devices.
-          </li>
-        </ul>
-      </div>
+    <div className='space-y-6'>
+      <Card className='border-border/70 bg-background/50'>
+        <CardHeader>
+          <CardTitle className='font-serif text-2xl'>Typr</CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-3 text-sm text-muted-foreground'>
+          <p>
+            Typr is a focused typing training app built with React and Tailwind.
+            It is designed for short, repeatable sessions with immediate feedback.
+          </p>
+          <p>
+            This version includes a redesigned typing arena, live stats during runs,
+            personal best tracking per time mode, and persistent recent run history.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className='border-border/70 bg-background/50'>
+        <CardHeader>
+          <CardTitle className='font-serif text-xl'>Shortcuts</CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-2 font-mono text-sm'>
+          <p>
+            <span className='mr-2 rounded bg-secondary px-2 py-1 text-secondary-foreground'>
+              Esc
+            </span>
+            restart current run
+          </p>
+          <p>
+            <span className='mr-2 rounded bg-secondary px-2 py-1 text-secondary-foreground'>
+              Click Arena
+            </span>
+            focus typing area
+          </p>
+          <p>
+            <span className='mr-2 rounded bg-secondary px-2 py-1 text-secondary-foreground'>
+              Backspace
+            </span>
+            correct active word input
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className='border-border/70 bg-background/50'>
+        <CardHeader>
+          <CardTitle className='font-serif text-xl'>Built for deliberate practice</CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-2 text-sm text-muted-foreground'>
+          <p>1. Pick a duration and focus the arena.</p>
+          <p>2. Type continuously, watching live WPM and accuracy.</p>
+          <p>3. Compare your run result with your personal best and recent history.</p>
+        </CardContent>
+      </Card>
     </div>
   );
 };

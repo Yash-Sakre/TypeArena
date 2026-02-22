@@ -1,9 +1,13 @@
 const MobileNotSupported = () => {
   return (
-    <div className='flex h-screen flex-col items-center justify-center px-3 font-mono'>
-      <h1 className='text-xl font-bold'>
-        😔 Sorry, this app is not supported on mobile devices. 🙏
-      </h1>
+    <div className='flex min-h-screen items-center justify-center px-4'>
+      <div className='max-w-md rounded-3xl border border-border/70 bg-card/70 p-6 text-center backdrop-blur'>
+        <h1 className='font-serif text-3xl text-foreground'>Desktop only</h1>
+        <p className='mt-3 text-sm text-muted-foreground'>
+          Typr currently needs a physical keyboard and a larger layout.
+          Open this on desktop or laptop for the full typing experience.
+        </p>
+      </div>
     </div>
   );
 };

@@ -1,35 +1,29 @@
-import Modal from 'react-modal';
-import { IoIosCloseCircle } from 'react-icons/io';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
-import { useThemeContext } from '../hooks/useTheme';
+type ModalType = 'result' | 'about';
 
 type ModalProps = {
-  type: string;
+  type: ModalType;
   isOpen: boolean;
-  onRequestClose: (str: string) => void;
+  onRequestClose: (type: ModalType) => void;
   children: React.ReactNode;
 };
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    width: '80%',
-    maxWidth: '1024px',
-    maxHeight: '90%',
-    marginRight: '-50%',
-    padding: 5,
-    transform: 'translate(-50%, -50%)',
-    border: 'none',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
+const titleMap: Record<ModalType, string> = {
+  result: 'Run summary',
+  about: 'About Typr',
 };
 
-Modal.setAppElement('#root');
+const descriptionMap: Record<ModalType, string> = {
+  result: 'Performance details for your latest typing run.',
+  about: 'What the app does and how to get the best training session.',
+};
 
 const ModalComponent = ({
   type,
@@ -37,42 +31,18 @@ const ModalComponent = ({
   onRequestClose,
   children,
 }: ModalProps) => {
-  const { systemTheme } = useThemeContext();
-
-  const styles = {
-    content: {
-      ...customStyles.content,
-      backgroundColor: systemTheme.background.primary,
-      color: systemTheme.text.title,
-    },
-    overlay: {
-      ...customStyles.overlay,
-    },
-  };
   return (
-    <Modal
-      isOpen={isOpen}
-      style={styles}
-      shouldCloseOnEsc={true}
-      shouldCloseOnOverlayClick={true}
-      onRequestClose={() => onRequestClose(type)}
-      closeTimeoutMS={300}
-    >
-      <div className='relative flex justify-end w-full'>
-        <button
-          onClick={() => onRequestClose(type)}
-          className='absolute right-1 top-1'
-        >
-          <IoIosCloseCircle
-            className='text-4xl'
-            style={{
-              color: systemTheme.text.secondary,
-            }}
-          />
-        </button>
-      </div>
-      <div style={{ color: systemTheme.text.title }}>{children}</div>
-    </Modal>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onRequestClose(type)}>
+      <DialogContent className='max-h-[90vh] overflow-y-auto rounded-3xl border border-border/70 bg-card p-0'>
+        <DialogHeader className='sticky top-0 z-10 border-b border-border/70 bg-card/95 px-6 py-5 backdrop-blur'>
+          <DialogTitle className='font-serif text-2xl text-foreground'>
+            {titleMap[type]}
+          </DialogTitle>
+          <DialogDescription>{descriptionMap[type]}</DialogDescription>
+        </DialogHeader>
+        <div className='px-6 pb-6 pt-2'>{children}</div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

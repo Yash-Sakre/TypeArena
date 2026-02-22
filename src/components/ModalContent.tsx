@@ -1,145 +1,141 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { useMemo, useState } from 'react';
 
 import { useClipboard } from '../hooks/useClipboard';
-import { useThemeContext } from '../hooks/useTheme';
 
-import { IoCopy } from 'react-icons/io5';
-import { FaCameraRetro } from 'react-icons/fa';
+import { IoCopyOutline } from 'react-icons/io5';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import Character from './Character';
 import ResultCard from './ResultCard';
 
-import type { Results } from '../types';
-import type { HistoryType } from '../types';
+import type { HistoryType, Results, RunRecord } from '../types';
 
 type ModalContentProps = {
   totalTime: number;
   history: HistoryType;
   results: Results;
+  bestWpm: number;
+  recentRuns: RunRecord[];
 };
 
-const StyledCopyButton = styled.button`
-  &:hover {
-    color: ${({ theme }) => theme.text.secondary};
-  }
-`;
+const formatTimestamp = (timestamp: number) => {
+  return new Intl.DateTimeFormat(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+    month: 'short',
+    day: 'numeric',
+  }).format(timestamp);
+};
 
-const ModalContent = ({ totalTime, history, results }: ModalContentProps) => {
+const ModalContent = ({
+  totalTime,
+  history,
+  results,
+  bestWpm,
+  recentRuns,
+}: ModalContentProps) => {
   const [copied, setCopied] = useState(false);
-  const [imageCopied, setImageCopied] = useState(false);
 
   const { copyTextToClipboard } = useClipboard();
-  const { systemTheme } = useThemeContext();
+
+  const correctCharacters = useMemo(() => {
+    if (!history.typedHistory.length) return 0;
+    return Math.round(history.typedHistory.length * (results.accuracy / 100));
+  }, [history.typedHistory.length, results.accuracy]);
+
+  const incorrectCharacters = history.typedHistory.length - correctCharacters;
 
   return (
-    <div
-      className='mx-auto flex h-full w-[95%] flex-col gap-10 pb-10 pt-8 font-mono'
-      style={{
-        color: systemTheme.text.primary,
-      }}
-    >
-      <div
-        className='flex-[3] px-5 py-7'
-        style={{
-          backgroundColor: systemTheme.background.primary,
-        }}
-      >
-        <div className='grid justify-center grid-flow-col grid-rows-6 gap-4  sm:grid-rows-4 sm:justify-normal lg:grid-rows-2 lg:justify-normal lg:gap-10'>
-          <ResultCard
-            title='wpm/cpm'
-            tooltipId='wpm'
-            tooltipContent='words per minute / characters per minute'
-            tooltipPlace='top'
-            results={`${results.wpm} / ${results.cpm}`}
-          />
-          <ResultCard
-            title='acc.'
-            tooltipId='accuracy'
-            tooltipContent='accuracy percentage'
-            tooltipPlace='bottom'
-            results={`${Math.round(results.accuracy)}%`}
-          />
-          <ResultCard
-            title='character'
-            tooltipId='character'
-            tooltipContent='correct/incorrect'
-            tooltipPlace='top'
-            results={`${Math.round(
-              history.typedHistory.length * (results.accuracy / 100)
-            )} / ${Math.round(
-              history.typedHistory.length * (results.error / 100)
-            )}`}
-          />
-          <ResultCard
-            title='err.'
-            tooltipId='error'
-            tooltipContent='error percentage'
-            tooltipPlace='bottom'
-            results={`${Math.round(results.error)}%`}
-          />
-          <ResultCard
-            title='time'
-            tooltipId='time'
-            tooltipContent='time taken to complete the test'
-            tooltipPlace='top'
-            results={`${totalTime / 1000}s`}
-          />
-          <ResultCard
-            title='total'
-            tooltipId='total'
-            tooltipContent='total character typed'
-            tooltipPlace='bottom'
-            results={`${history.typedHistory.length}`}
-          />
-        </div>
+    <div className='space-y-6'>
+      <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+        <ResultCard
+          label='Speed'
+          value={`${results.wpm} wpm`}
+          helper={`${results.cpm} cpm`}
+        />
+        <ResultCard
+          label='Accuracy'
+          value={`${Math.round(results.accuracy)}%`}
+          helper={`${Math.round(results.error)}% error`}
+        />
+        <ResultCard
+          label='Characters'
+          value={`${correctCharacters}/${history.typedHistory.length}`}
+          helper={`${incorrectCharacters} incorrect`}
+        />
+        <ResultCard
+          label='Best on this time'
+          value={`${bestWpm} wpm`}
+          helper={`Run length: ${totalTime / 1000}s`}
+        />
       </div>
 
-      <div className='flex-[3] px-5'>
-        <div className='flex items-center gap-2'>
-          <h2 className='text-xl lg:text-2xl'>watch history</h2>
-          <StyledCopyButton
+      <Card className='border-border/70 bg-background/50'>
+        <CardHeader className='flex flex-row items-center justify-between space-y-0'>
+          <CardTitle className='font-serif text-xl'>Typed transcript</CardTitle>
+          <Button
+            variant='outline'
+            size='sm'
             onClick={async () => {
               const isCopied = await copyTextToClipboard(history.typedHistory);
-              if (isCopied) {
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
-                }, 2000);
-              }
-            }}
-            theme={systemTheme}
-          >
-            <IoCopy className='text-xl cursor-pointer' />
-          </StyledCopyButton>
-          <div
-            className='rounded-md'
-            style={{
-              backgroundColor: systemTheme.background.secondary,
+              if (!isCopied) return;
+
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1800);
             }}
           >
-            {copied === true ? (
-              <span
-                className='p-5 '
-                style={{ color: systemTheme.text.secondary }}
-              >
-                Copied ✅
-              </span>
-            ) : null}
-          </div>
-        </div>
-        <div className='mt-3 text-lg lg:text-xl'>
-          {history.typedHistory.split('').map((char, index) => {
-            return (
-              <Character
-                key={index + char}
-                character={history.wordHistory[index]}
-                state={history.wordHistory[index] === char}
-              />
-            );
-          })}
-        </div>
-      </div>
+            <IoCopyOutline className='mr-2' />
+            {copied ? 'Copied' : 'Copy'}
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <p className='rounded-xl border border-border/70 bg-background px-4 py-3 font-mono text-lg leading-relaxed text-muted-foreground'>
+            {history.typedHistory.split('').map((char, index) => {
+              return (
+                <Character
+                  key={`${char}-${index}`}
+                  character={history.wordHistory[index]}
+                  state={history.wordHistory[index] === char}
+                />
+              );
+            })}
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className='border-border/70 bg-background/50'>
+        <CardHeader>
+          <CardTitle className='font-serif text-xl'>Recent runs</CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-2'>
+          {recentRuns.length ? (
+            recentRuns.map((run) => {
+              return (
+                <div
+                  key={run.id}
+                  className='flex items-center justify-between rounded-lg border border-border/60 bg-background px-3 py-2'
+                >
+                  <span className='font-mono text-sm text-muted-foreground'>
+                    {formatTimestamp(run.timestamp)}
+                  </span>
+                  <span className='font-mono text-sm text-foreground'>
+                    {run.wpm} wpm / {Math.round(run.accuracy)}%
+                  </span>
+                  <span className='font-mono text-sm text-muted-foreground'>
+                    {run.time / 1000}s
+                  </span>
+                </div>
+              );
+            })
+          ) : (
+            <p className='text-sm text-muted-foreground'>
+              No run history yet. Complete one run to populate this panel.
+            </p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };

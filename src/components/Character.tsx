@@ -1,5 +1,3 @@
-import { useThemeContext } from '../hooks/useTheme';
-
 type CharactersProps = {
   state?: boolean;
   character: string;
@@ -7,20 +5,17 @@ type CharactersProps = {
 };
 
 const Character = ({ state, character, className }: CharactersProps) => {
-  const { systemTheme } = useThemeContext();
+  const characterStateClass =
+    state === undefined
+      ? ''
+      : state === true
+      ? 'text-secondary-foreground'
+      : 'text-destructive';
+
+  const invalidSpaceClass = state === false && character === ' ' ? 'bg-destructive' : '';
+
   return (
-    <span
-      style={{
-        color:
-          state === undefined
-            ? ''
-            : state === true
-            ? systemTheme.text.secondary
-            : '#BD0101',
-        backgroundColor: state === false && character === ' ' ? '#BD0101' : '',
-      }}
-      className={`${className}`}
-    >
+    <span className={`${className} ${characterStateClass} ${invalidSpaceClass}`}>
       {character}
     </span>
   );

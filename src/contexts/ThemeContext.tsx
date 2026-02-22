@@ -13,10 +13,10 @@ export const ThemeContext = createContext<ThemeContextType>(
 );
 
 export default function ThemeProvider({ children }: ThemeProviderProps) {
-  const { systemTheme, setTheme } = useTheme();
+  const { themeName, setTheme } = useTheme();
 
   return (
-    <ThemeContext.Provider value={{ systemTheme, setTheme }}>
+    <ThemeContext.Provider value={{ themeName, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

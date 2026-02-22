@@ -1,85 +1,41 @@
-import { useContext } from "react";
+import { BiTimer } from 'react-icons/bi';
 
-import { BiTimer } from "react-icons/bi";
-
-import { ThemeContext } from "../contexts/ThemeContext";
-import { Theme } from "../types";
-import Countdown from "./Countdown";
-import { useSystem } from "../hooks/useSystem";
+import { Button } from '@/components/ui/button';
 
 type TimeCategoryProps = {
   time: number;
-  setTime: (value: number) => void;
-  setLocalStorage: (key: string, value: number | Theme) => void;
-  restart: () => void;
+  presets: readonly number[];
+  onSelectTime: (value: number) => void;
 };
 
-const TimeCategory = ({
-  time,
-  setTime,
-  restart,
-  setLocalStorage,
-}: TimeCategoryProps) => {
-  const { systemTheme } = useContext(ThemeContext);
-  const { resetCountdown, countdown } = useSystem();
+const TimeCategory = ({ time, presets, onSelectTime }: TimeCategoryProps) => {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <BiTimer className="text-3xl" />
-        <div
-          className="flex gap-4 rounded-lg"
-          style={{
-            backgroundColor: systemTheme.background.secondary,
-          }}
-        >
-          <span
-            className={`category ${
-              time === 15000 ? "font-bold underline" : ""
-            } hover:underline`}
-            onClick={() => {
-              setTime(15000);
-              setLocalStorage("time", 15000);
-              restart();
-            }}
-            style={{
-              color: time === 15000 ? systemTheme.text.secondary : "",
-            }}
-          >
-            15s
-          </span>
-          <span
-            className={`category ${
-              time === 30000 ? "font-bold underline" : ""
-            } hover:underline`}
-            onClick={() => {
-              setTime(30000);
-              setLocalStorage("time", 30000);
-              restart();
-            }}
-            style={{
-              color: time === 30000 ? systemTheme.text.secondary : "",
-            }}
-          >
-            30s
-          </span>
-          <span
-            className={`category ${
-              time === 60000 ? "font-bold underline" : ""
-            } hover:underline`}
-            onClick={() => {
-              setTime(60000);
-              setLocalStorage("time", 60000);
-              restart();
-            }}
-            style={{
-              color: time === 60000 ? systemTheme.text.secondary : "",
-            }}
-          >
-            60s
-          </span>
-        </div>
+    <div className='space-y-3'>
+      <div className='flex items-center gap-2'>
+        <BiTimer className='text-xl text-primary' />
+        <p className='text-xs uppercase tracking-[0.14em] text-muted-foreground'>
+          Duration mode
+        </p>
       </div>
-      <Countdown countdown={countdown} reset={resetCountdown} />
+
+      <div className='flex flex-wrap gap-2'>
+        {presets.map((preset) => {
+          const isActive = preset === time;
+
+          return (
+            <Button
+              key={preset}
+              type='button'
+              size='sm'
+              variant={isActive ? 'default' : 'outline'}
+              className='font-mono'
+              onClick={() => onSelectTime(preset)}
+            >
+              {preset / 1000}s
+            </Button>
+          );
+        })}
+      </div>
     </div>
   );
 };

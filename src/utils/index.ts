@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { AccuracyMetrics } from '../types';
+import type { AccuracyMetrics } from '../types';
 
 export const isAllowedCode = (code: string): boolean => {
   return (
@@ -36,7 +36,18 @@ export const generateWord = (n: number): string => {
 };
 
 export const calculateAccuracy = (expectedWord: string, typedWord: string) => {
+  if (!typedWord.length) {
+    const accuracyMetrics: AccuracyMetrics = {
+      correctChars: 0,
+      incorrectChars: 0,
+      accuracy: 0,
+    };
+
+    return accuracyMetrics;
+  }
+
   let correctChars = 0;
+
   for (let i = 0; i < typedWord.length; i++) {
     if (typedWord[i] === expectedWord[i]) {
       correctChars++;
@@ -48,6 +59,7 @@ export const calculateAccuracy = (expectedWord: string, typedWord: string) => {
     incorrectChars: typedWord.length - correctChars,
     accuracy: (correctChars / typedWord.length) * 100,
   };
+
   return accuracyMetrics;
 };
 
@@ -63,39 +75,12 @@ export const calculateWPM = (
 
   const results = {
     wpm: netWPM,
-    cpm: typedWord.length / minutes,
+    cpm: Math.round(typedWord.length / minutes),
   };
+
   return results;
 };
 
 export const calculateErrorPercentage = (accuracy: number) => {
   return 100 - accuracy;
-};
-
-export const theme = {
-
-  light: {
-    name: 'light',
-    background: {
-      primary: '#EEEEEE',
-      secondary: '#DDDDDD',
-    },
-    text: {
-      primary: '#B4B4B4',
-      secondary: '#444444',
-      title: '#444444', 
-    },
-  },
-  dark: {
-    name: 'dark',
-    background: {
-      primary: '#181C18',
-      secondary: '#131613',
-    },
-    text: {
-      primary: '#9578D3',
-      secondary: '#04AF6A',
-      title: '#9578D3',
-    },
-  },
 };

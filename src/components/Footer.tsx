@@ -1,63 +1,38 @@
-import styled from "styled-components";
-import { BsGithub, BsTwitterX, BsLinkedin } from "react-icons/bs";
-
-import { useThemeContext } from "../hooks/useTheme";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
-import { Link } from "react-router-dom";
-
-const StyledLink = styled.a`
-  &:hover {
-    color: ${({ theme }) => theme.text.title};
-  }
-`;
+import { BsGithub, BsLinkedin, BsTwitterX } from 'react-icons/bs';
 
 const Footer = () => {
-  const { systemTheme } = useThemeContext();
   return (
-    <footer className="mt-auto mb-3">
-      <div className="flex flex-col items-center justify-center w-full ">
-        <div className="flex items-center justify-center gap-4 ">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <a
-                  href="https://github.com/Yash-Sakre"
-                  className="cursor-pointer"
-                >
-                  <BsGithub size={30} />
-                </a>
-              </TooltipTrigger>
-              <TooltipContent className="">Github</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger>
-                <a href="https://x.com/YashSakre4" className="cursor-pointer">
-                  <BsTwitterX size={30} />
-                </a>
-              </TooltipTrigger>
-              <TooltipContent>Telegram</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger>
-                <a
-                  href="https://www.linkedin.com/in/yash-sakre/"
-                  className="cursor-pointer"
-                >
-                  <BsLinkedin size={30} />
-                </a>
-              </TooltipTrigger>
-              <TooltipContent className="">Linkedin</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-        <div className="flex items-center gap-2 mt-2">
-          Made by{" "}
-          <span style={{ color: systemTheme.text.secondary }}>Yash Sakre</span>
+    <footer className='mt-auto rounded-2xl border border-border/60 bg-card/60 px-4 py-3 backdrop-blur'>
+      <div className='flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground'>
+        <p>
+          Made by <span className='text-foreground'>Yash Sakre</span>
+        </p>
+
+        <div className='flex items-center gap-3 text-lg'>
+          <a
+            href='https://github.com/Yash-Sakre'
+            className='transition-colors hover:text-foreground'
+            target='_blank'
+            rel='noreferrer'
+          >
+            <BsGithub />
+          </a>
+          <a
+            href='https://x.com/YashSakre4'
+            className='transition-colors hover:text-foreground'
+            target='_blank'
+            rel='noreferrer'
+          >
+            <BsTwitterX />
+          </a>
+          <a
+            href='https://www.linkedin.com/in/yash-sakre/'
+            className='transition-colors hover:text-foreground'
+            target='_blank'
+            rel='noreferrer'
+          >
+            <BsLinkedin />
+          </a>
         </div>
       </div>
     </footer>

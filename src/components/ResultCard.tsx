@@ -1,55 +1,20 @@
-import { useThemeContext } from "../hooks/useTheme";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Card, CardContent } from '@/components/ui/card';
 
 type ResultCardProps = {
-  tooltipId: string;
-  tooltipContent: string;
-  tooltipPlace: "bottom" | "top" | "left" | "right";
-  title: string;
-  results: string;
+  label: string;
+  value: string;
+  helper: string;
 };
 
-const ResultCard = ({
-  title,
-  tooltipId,
-  tooltipContent,
-  tooltipPlace,
-  results,
-}: ResultCardProps) => {
-  const { systemTheme } = useThemeContext();
+const ResultCard = ({ label, value, helper }: ResultCardProps) => {
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>
-          <div
-            className="flex flex-col items-center justify-center w-full gap-2 p-5 rounded-lg cursor-pointer"
-            data-tooltip-content={tooltipContent}
-            data-tooltip-id={tooltipId}
-            data-tooltip-place={tooltipPlace}
-            style={{
-              backgroundColor: systemTheme.background.secondary,
-            }}
-          >
-            <h2 className="text-3xl">{title}</h2>
-            <p
-              className="text-3xl text-center"
-              style={{
-                color: systemTheme.text.secondary,
-              }}
-            >
-              {results}
-            </p>
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>{title}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Card className='border-border/70 bg-background/60 backdrop-blur'>
+      <CardContent className='space-y-2 p-4'>
+        <p className='text-xs uppercase tracking-[0.14em] text-muted-foreground'>{label}</p>
+        <p className='font-mono text-2xl text-foreground'>{value}</p>
+        <p className='text-xs text-muted-foreground'>{helper}</p>
+      </CardContent>
+    </Card>
   );
 };
 

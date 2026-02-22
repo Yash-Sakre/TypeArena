@@ -1,47 +1,35 @@
-import { useEffect } from 'react';
-
-import { useThemeContext } from '../hooks/useTheme';
-
 type CountdownProps = {
   countdown: number;
-  reset: () => void;
+  totalTime: number;
+  progress: number;
+  isRunning: boolean;
 };
 
-const Countdown = ({ countdown, reset }: CountdownProps) => {
-  useEffect(() => {
-    reset();
-  }, [reset]);
+const Countdown = ({ countdown, totalTime, progress, isRunning }: CountdownProps) => {
+  const minutes = new Date(countdown).getUTCMinutes();
+  const seconds = new Date(countdown).getUTCSeconds();
 
-  const formatedCountdown = {
-    minutes: new Date(countdown).getUTCMinutes(),
-    seconds: new Date(countdown).getUTCSeconds(),
-  };
-
-  const { systemTheme } = useThemeContext();
+  const formatted = `${minutes < 10 ? `0${minutes}` : minutes}:${
+    seconds < 10 ? `0${seconds}` : seconds
+  }`;
 
   return (
-    <div className='flex '>
-      <div
-        className='p-3 rounded-lg '
-        style={{
-          backgroundColor: systemTheme.background.secondary,
-        }}
-      >
-        <span
-          className='font-mono text-lg text-right lg:text-xl'
-          style={{
-            color: systemTheme.text.secondary,
-          }}
-        >
-          {formatedCountdown.minutes < 10
-            ? `0${formatedCountdown.minutes}`
-            : formatedCountdown.minutes}
-          :
-          {formatedCountdown.seconds < 10
-            ? `0${formatedCountdown.seconds}`
-            : formatedCountdown.seconds}
+    <div className='space-y-2'>
+      <div className='flex items-end justify-between'>
+        <span className='font-mono text-4xl text-foreground'>{formatted}</span>
+        <span className='text-xs uppercase tracking-[0.14em] text-muted-foreground'>
+          {isRunning ? 'in progress' : 'ready'}
         </span>
       </div>
+      <div className='h-2 overflow-hidden rounded-full bg-secondary'>
+        <div
+          className='h-full rounded-full bg-primary transition-[width] duration-300'
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      <p className='text-xs text-muted-foreground'>
+        {Math.round((countdown / totalTime) * 100)}% time left
+      </p>
     </div>
   );
 };

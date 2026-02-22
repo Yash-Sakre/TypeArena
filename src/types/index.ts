@@ -16,15 +16,13 @@ export interface HistoryType {
   typedHistory: string;
 }
 
-export interface Theme {
-  name: string;
-  background: {
-    primary: string;
-    secondary: string;
-  };
-  text: {
-    primary: string;
-    secondary: string;
-    title: string;
-  };
+export interface RunRecord extends Results {
+  id: string;
+  time: number;
+  totalTyped: number;
+  timestamp: number;
 }
+
+export type BestWpmByTime = Record<string, number>;
+
+export type ThemeName = 'light' | 'dark';

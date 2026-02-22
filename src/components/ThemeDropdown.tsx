@@ -1,94 +1,43 @@
-import { useDropdown } from '../hooks/useDropdown';
 import { useThemeContext } from '../hooks/useTheme';
+import { BsMoonStarsFill, BsSunFill } from 'react-icons/bs';
 
-import { theme } from '../utils';
+import type { ThemeName } from '../types';
 
 const ThemeDropdown = () => {
-  const { dropdownRef, isOpen, toggleDropdown } = useDropdown();
-  const { systemTheme, setTheme } = useThemeContext();
+  const { themeName, setTheme } = useThemeContext();
+  const isDark = themeName === 'dark';
+  const nextTheme: ThemeName = isDark ? 'light' : 'dark';
 
   return (
-    <>
-      <div className='flex font-mono rounded-md'>
-        <div className='relative' ref={dropdownRef}>
-          <button
-            type='button'
-            className={`inline-flex h-full items-center justify-center rounded-md border-0 px-2 outline-0`}
-            style={{
-              color:systemTheme.text.secondary,
-              backgroundColor: systemTheme.background.secondary,
-              border: `1px solid ${systemTheme.text.secondary}`,
-            }}
-            onClick={() => toggleDropdown()}
-          >
-            {systemTheme.name}
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='w-4 h-4 ml-3'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M19 9l-7 7-7-7'
-              />
-            </svg>
-          </button>
+    <button
+      type='button'
+      onClick={() => setTheme(nextTheme)}
+      aria-label={`Switch to ${nextTheme} theme`}
+      className='relative h-8 w-16 rounded-full border border-secondary-foreground bg-secondary p-1 transition-colors duration-300'
+    >
+      <span
+        className={`absolute left-2 top-1/2 -translate-y-1/2 text-xs text-secondary-foreground transition-opacity duration-300 ${
+          isDark ? 'opacity-100' : 'opacity-[0.35]'
+        }`}
+      >
+        <BsMoonStarsFill />
+      </span>
+      <span
+        className={`absolute right-2 top-1/2 -translate-y-1/2 text-xs text-secondary-foreground transition-opacity duration-300 ${
+          isDark ? 'opacity-[0.35]' : 'opacity-100'
+        }`}
+      >
+        <BsSunFill />
+      </span>
 
-          <div
-            className='absolute right-0 z-10 w-56 mt-1 origin-top-right rounded-md shadow-lg'
-            style={{
-              backgroundColor: systemTheme.background.secondary,
-              border: `1px solid ${systemTheme.text.secondary}`,
-              display: isOpen ? 'block' : 'none',
-            }}
-          >
-            <ul
-              className={`divide-y divide-slate-400`}
-              style={{ color: systemTheme.text.title }}
-            >
-              {Object.keys(theme).map((key) => (
-                <li
-                  key={key}
-                  className='flex items-center justify-between p-3 text-sm cursor-pointer'
-                  onClick={() => {
-                    setTheme(theme[key as keyof typeof theme]);
-                  }}
-                >
-                  <span>{theme[key as keyof typeof theme].name}</span>
-                  <div className='flex items-center gap-2'>
-                    <div
-                      style={{
-                        backgroundColor:
-                          theme[key as keyof typeof theme].background.primary,
-                      }}
-                      className={`aspect-square w-3 rounded-full`}
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor:
-                          theme[key as keyof typeof theme].text.primary,
-                      }}
-                      className={`aspect-square w-3 rounded-full`}
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor:
-                          theme[key as keyof typeof theme].text.secondary,
-                      }}
-                      className={`aspect-square w-3 rounded-full`}
-                    ></div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </>
+      <span
+        className={`absolute top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full transition-all duration-300 ${
+          isDark ? 'translate-x-0' : 'translate-x-8'
+        } bg-background text-foreground`}
+      >
+        {isDark ? <BsMoonStarsFill size={12} /> : <BsSunFill size={12} />}
+      </span>
+    </button>
   );
 };
 
